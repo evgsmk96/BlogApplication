@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmls:th="http://www.thymeleaf.org" xmlns:xmls="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Блог</title>
@@ -10,6 +10,14 @@
     <a class="me-3 py-2 text-dark text-decoration-none" href="/blog">Блог</a>
     <a class="me-3 py-2 text-dark text-decoration-none" href="/about">О нас</a>
 </nav>
-<h1>Блог</h1>
+<div class = "container mt-5">
+    <h1>Блог сайта</h1>
+    <div th:each="el : ${posts}" />
+        <h3 th:text="${el.title}"/>
+        <p th:text="${el.anons}"/>
+        <a th:href="'/blog/' + ${el.id}">Детальнее</a>
+    </div>
+</div>
+
 </body>
 </html>
