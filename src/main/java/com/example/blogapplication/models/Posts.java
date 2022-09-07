@@ -11,11 +11,10 @@ public class Posts {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String title,anons,full_text;
-    private int views;
 
     public Posts(){
-
     }
+
     public Posts(String title, String anons, String full_text) {
         this.title = title;
         this.anons = anons;
@@ -54,11 +53,4 @@ public class Posts {
         this.full_text = full_text;
     }
 
-    public int getViews() {
-        return views;
-    }
-
-    public void setViews(int views) {
-        this.views = views;
-    }
 }
