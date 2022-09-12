@@ -4,11 +4,8 @@ import com.example.blogapplication.models.Posts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import com.example.blogapplication.repo.PostRepository;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -23,7 +20,6 @@ public class BlogController {
     public String blogMain (Model model) {
         Iterable<Posts> posts = postRepo.findAll();
         model.addAttribute("posts", posts);
-        model.addAttribute("title","Главная страница");
         return "blog-main";
     }
 
@@ -33,9 +29,9 @@ public class BlogController {
     }
 
     @PostMapping("/blog/add")
-    public String blogAddPost (@RequestParam String title, @RequestParam String anons, @RequestParam String fulltext, Model model) {
-        Posts post = new Posts(title, anons, fulltext);
-        postRepo.save(post);
+    public String blogAddPost (@RequestParam String title, @RequestParam String anons, @RequestParam String full_text,Model model) {
+        Posts posts = new Posts(title, anons, full_text);
+        postRepo.save(posts);
         return "redirect:/blog";
     }
 
@@ -44,11 +40,12 @@ public class BlogController {
         if(!postRepo.existsById(id)){
             return "redirect:/blog";
         }
-        Optional<Posts> posts = postRepo.findById(id);
+        Optional<Posts> post = postRepo.findById(id);
         ArrayList<Posts> res = new ArrayList<>();
-        posts.ifPresent(res::add);
-        model.addAttribute("posts",res);
+        post.ifPresent(res::add);
+        model.addAttribute("post",res);
         return "blog-details";
+
     }
 
     @GetMapping("/blog/{id}/edit")
@@ -56,11 +53,24 @@ public class BlogController {
         if(!postRepo.existsById(id)){
             return "redirect:/blog";
         }
-        Optional<Posts> posts = postRepo.findById(id);
+        Optional<Posts> post = postRepo.findById(id);
         ArrayList<Posts> res = new ArrayList<>();
-        posts.ifPresent(res::add);
-        model.addAttribute("posts",res);
+        post.ifPresent(res::add);
+        model.addAttribute("post",res);
         return "blog-edit";
+
     }
+
+    @PostMapping("/blog/{id}/edit")
+    public String blogUpdate(@PathVariable(value="id") long id,@RequestParam String title,@RequestParam String anons,@RequestParam String full_text, Model model) {
+        Posts post = postRepo.findById(id).orElseThrow();
+        post.setTitle(title);
+        post.setAnons(anons);
+        post.setFull_text(full_text);
+        postRepo.save(post);
+        return "redirect:/blog";
+
+    }
+
 
 }
