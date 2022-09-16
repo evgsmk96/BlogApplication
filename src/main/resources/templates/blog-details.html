@@ -24,8 +24,10 @@
     <div th:each="post: ${post}" class="alert alert-info mt-2">
         <h1 th:text="${post.title}"></h1>
         <p th:text="${post.full_text}"></p>
-        <a th:href="'/blog/'+ ${post.id} +'/remove'" class="btn btn-warning">Удалить</a>
-        <a th:href="'/blog/'+ ${post.id} +'/edit'" class="btn btn-warning">Редактировать</a>
+        <a th:href="'/blog/'+ ${post.id} +'/edit'" class="btn btn-warning">Редактировать</a><br> <br>
+        <form th:action="'/blog/' + ${post.id} + '/remove'" method="post">
+            <button class="btn btn-warning" type="submit">Удалить</button>
+        </form>
     </div>
 </div>
 </body>
